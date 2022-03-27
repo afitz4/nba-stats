@@ -1,15 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { getPlayers } from './nbaStatsClient';
+import { Player } from './models/Player';
 
 function App() {
+  
+  const [players, setPlayers] = useState([new Player()]);
+
+  useEffect(() => {
+    getPlayers(setPlayers);
+  }, [])
+  
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
+        <div>
+          {players[0].firstName}
+        </div>
         <a
           className="App-link"
           href="https://reactjs.org"
