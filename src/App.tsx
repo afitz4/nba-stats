@@ -1,30 +1,46 @@
-import React, { useEffect, useState } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import { getAllPlayers, getPlayers } from './nbaStatsClient';
-import { Player } from './models/Player';
-import { TextInput, Title } from '@mantine/core';
-import { setNameAndSimilarName } from './nameSimilarityCalculator';
-
+import React, { useEffect, useState } from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import { getAllPlayers, getPlayers } from "./nbaStatsClient";
+import { Player } from "./models/Player";
+import { Progress, TextInput, Title, Text } from "@mantine/core";
+import { setNameAndSimilarName } from "./nameSimilarityCalculator";
 
 function App() {
-  
   const [players, setPlayers] = useState([new Player()]);
-  const [name, setName] = useState('');
-  const [similarName, setSimilarName] = useState('');
+  const [name, setName] = useState("");
+  const [similarName, setSimilarName] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [progress, setProgress] = useState(100);
 
   useEffect(() => {
-    getAllPlayers(setPlayers);
-  }, [])
-  
+    getAllPlayers(setPlayers, setLoading, setProgress);
+  }, []);
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <TextInput value={name} onChange={(event: any) => setNameAndSimilarName(event.currentTarget.value, setName, setSimilarName, players.map(player => player.getFullName()))} />;
-        <Title order={1}>{similarName}</Title>
+      <Title order={1}>basketboardle</Title>
+      <Text size="lg">wecome to basketboardle. this will be some worlde type games, but nba type</Text>
+        <TextInput
+          value={name}
+          onChange={(event: any) =>
+            setNameAndSimilarName(
+              event.currentTarget.value,
+              setName,
+              setSimilarName,
+              players.map((player) => player.getFullName())
+            )
+          }
+        />
+        <Title order={2}>{similarName}</Title>
+        <Progress value={progress} size="xl" />
         <div>
-          {players.map(player => player.firstName == undefined ? "loading" : <li>{player.firstName} {player.lastName}</li>)}
+          {players.map((player) =>
+              <li>
+                {player.firstName} {player.lastName}
+              </li>
+          )}
         </div>
         <a
           className="App-link"
